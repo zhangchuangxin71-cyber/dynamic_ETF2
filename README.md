@@ -1,6 +1,6 @@
 
 </div>
-=======
+
 # Scalable Class-Incremental Learning Based on Parametric Neural Collapse (SCL-PNC)
 
 ## 🌟 Abstract
@@ -90,7 +90,7 @@ SCL-PNC demonstrates significant performance gains. For instance, on the CIFAR-1
 * **Total Epochs:** 200
 * **LR Schedule:** Decayed by 0.01 every 20 training epochs
 * **Augmentation:** Standard data augmentation including random crop, horizontal flip, and color jitter.
-
+* **Training Scripts:**The main training script is main_memo.py, with main_memo1.py providing an alternative configuration. A typical command to train on CIFAR100 would be:python main_memo.py -model memo -init 50 -incre 5 -ms 3312 -net memo_resnet32 -p fair -d 0
 ## ✍️ Citation
 
 If you use this work in your research, please cite our paper:
