@@ -92,7 +92,7 @@ SCL-PNC demonstrates significant performance gains. For instance, on the CIFAR-1
 * **Augmentation:** Standard data augmentation including random crop, horizontal flip, and color jitter.
 * **Training Scripts:**The main training script is main_memo.py, with main_memo1.py providing an alternative configuration.
 * A typical command to train on CIFAR100 would be:python main_memo.py -model memo -init 50 -incre 5 -ms 3312 -net memo_resnet32 -p fair -d 0
-* A typical command to train on imagenet100 would be:python main_memo.py --dataset imagenet100 --convnet_type memo_resnet34_imagenet --init_cls 50 --increment 10 --memory_size 3312 --batch_size 128 --init_epoch 200 --epochs 200 --use_adapt_layer --ETF_classifier --prefix imagenet_ablation_full
+* A typical command to train on imagenet100 would be:python main_memo.py --dataset imagenet100 --convnet_type memo_resnet34_imagenet --init_cls 50 --increment 10 --memory_size 3312 --batch_size 128 --init_epoch 200 --epochs 200
 ## ✍️ Citation
 
 If you use this work in your research, please cite our paper:
