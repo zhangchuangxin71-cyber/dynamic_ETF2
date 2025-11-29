@@ -96,7 +96,7 @@ If you use this work in your research, please cite our paper:
 @article{zhao2025scalable,
   title={Scalable Class-Incremental Learning Based on Parametric Neural Collapse},
   author={Zhao, Enhui and Lin, Guangfeng and Zhang, Chuangxin and Liao, Kaiyang and Chen, Yajun},
-  journal={Preprint submitted to Pattern Recognition},
+  journal={},
   year={2025},
-  month={July 31}
+  month={}
 }
