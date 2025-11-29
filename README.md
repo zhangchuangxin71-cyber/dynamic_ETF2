@@ -1,58 +1,106 @@
-# A Model or 603 Exemplars: Towards Memory-Efficient Class-Incremental Learning
 
-The code repository for "[A Model or 603 Exemplars: Towards Memory-Efficient Class-Incremental Learning](https://arxiv.org/abs/2205.13218)" (**ICLR'23 Spotlight**) in PyTorch. If you use any content of this repo for your work, please cite the following bib entry:
+</div>
+=======
+# Scalable Class-Incremental Learning Based on Parametric Neural Collapse (SCL-PNC)
 
-```
-@inproceedings{zhou2023model,
-  title={A Model or 603 Exemplars: Towards Memory-Efficient Class-Incremental Learning},
-  author={Zhou, Da-Wei and Wang, Qi-Wei and Ye, Han-Jia and Zhan, De-Chuan},
-  booktitle={ICLR},
-  year={2023}
+## 🌟 Abstract
+
+Class-Incremental Learning (CIL) often encounters challenges such as overfitting to new data and **catastrophic forgetting** of old data. Existing model expansion methods, while effective, can ignore structural efficiency, leading to **feature differences** between modules and **class distribution mapping bias**.
+
+To address these issues, we propose the **Scalable Class-Incremental Learning based on Parametric Neural Collapse (SCL-PNC)** method. SCL-PNC enables demand-driven, minimal-cost backbone expansion through two core mechanisms:
+
+1.  A **Dynamic Parametric Equiangular Tight Frame (ETF) Classifier** to mitigate the class distribution mapping bias.
+2.  An **Adapt-layer** combined with a **parallel expansion framework** and **knowledge distillation** to align features across expanded modules, thereby counteracting **feature drift** and ensuring feature consistency.
+
+SCL-PNC leverages the phenomenon of **Neural Collapse** to structurally guide the convergence of the incrementally expanded model. Our method demonstrates superior effectiveness and efficiency on standard benchmarks.
+
+## 💡 Key Contributions
+
+Our primary contributions are summarized as follows:
+
+* **Adaptive Feature Alignment:** We introduce an **Adapt-layer** built on knowledge distillation to constrain feature vector prototypes from the backbone to align with classifier prototypes, effectively alleviating feature consistency deviation between modules.
+* **Dynamic Classifier Design:** We propose a novel **Dynamic Parametric ETF Classifier** to address the distribution mapping bias, ensuring the classifier can scale its vectors dynamically in accordance with the increasing number of incremental classes.
+* **Superior Performance:** SCL-PNC significantly outperforms State-of-the-Art (SOTA) methods on both small-scale (CIFAR-100) and large-scale (ImageNet-100) datasets. Our **parallel expansion framework** also shows an inherent architectural advantage over serial expansion methods.
+
+## 🧠 Methodology
+
+SCL-PNC is built around an incrementally expandable model backbone, guided by three critical components:
+
+### 1. Expandable Model Backbone (EM)
+
+The backbone is composed of a **frozen Base-layer** (for general features) and **trainable Expand-layers** (for task-specific information).
+
+* Uses a **parallel expansion framework** with a **dual-source input strategy** for each new Expand-layer.
+* Incorporates **Knowledge Distillation ($\mathcal{L}_{distill}$)** between continuous expansion modules to maintain the continuity of old task knowledge.
+
+### 2. Adaptive Layer (Adapt-layer)
+
+The Adapt-layer acts as a feature space transformation bridge, guiding the features towards the vertices defined by the ETF classifier.
+
+* It imposes constraints on the feature vector prototypes to align with the corresponding classifier prototypes, thus **inducing Neural Collapse** within the backbone.
+* Implemented using an **MLP (Multi-Layer Perceptron)** for high efficiency.
+
+### 3. Parametric ETF Classifier
+
+The classifier replaces the traditional fully-connected layer to leverage the properties of Neural Collapse.
+
+* It is **dynamically expandable**, meaning the number of class prototypes ($K$) scales automatically with the arrival of new incremental classes.
+
+### 4. Loss Function
+
+The total loss function is a balanced combination of a point-wise regression loss for collapse and a distillation loss for consistency:
+
+$$\mathcal{L} = \mathcal{L}_{DR} + \lambda \mathcal{L}_{distill} \quad \text{where } 0 < \lambda < 1$$
+
+* $\mathcal{L}_{DR}$: Point Regression Loss, utilized to **induce Neural Collapse**.
+* $\mathcal{L}_{distill}$: Distillation Loss, ensuring **knowledge transfer** and feature consistency between expanded modules.
+
+## 📊 Experimental Results
+
+### Datasets and Metrics
+
+* **Datasets:** CIFAR-100 and ImageNet-100.
+* **Evaluation:** Incremental Accuracy Curve and **Average Recognition Accuracy ($\bar{A}$)**.
+
+### Performance Highlights
+
+SCL-PNC demonstrates significant performance gains. For instance, on the CIFAR-100 dataset using the `B50Inc10` strategy (Base 50 classes, 10 classes incremental per step), SCL-PNC achieves an **Average Accuracy of 70.92%**.
+
+| Strategy | Task 1 | Task 2 | Task 3 | Task 4 | Task 5 | Task 6 | **Average ($\bar{A}$)** |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| B50Inc10 | 78.62 | 74.67 | 73.04 | 68.20 | 66.28 | 64.69 | **70.92** |
+| B50Inc5 | 78.62 | 75.76 | 74.80 | 73.02 | 72.61 | ... | **70.82** |
+| B10Inc10 | 91.10 | 79.40 | 74.37 | 68.45 | ... | ... | **64.90** |
+
+## 💻 Environment and Reproduction
+
+### Prerequisites
+
+* Python (Recommended version 3.8+)
+* PyTorch (Tested with recent versions)
+* PyCIL library (for standardized benchmarking)
+* A memory buffer of 3312 examples is required for the exemplar replay component.
+
+### Training Settings
+
+* **Optimizer:** SGD
+* **Initial Learning Rate:** 0.1
+* **SGD Momentum:** 0.9
+* **Batch Size:** 128 (for both base and incremental tasks)
+* **Total Epochs:** 200
+* **LR Schedule:** Decayed by 0.01 every 20 training epochs
+* **Augmentation:** Standard data augmentation including random crop, horizontal flip, and color jitter.
+
+## ✍️ Citation
+
+If you use this work in your research, please cite our paper:
+
+```bibtex
+@article{zhao2025scalable,
+  title={Scalable Class-Incremental Learning Based on Parametric Neural Collapse},
+  author={Zhao, Enhui and Lin, Guangfeng and Zhang, Chuangxin and Liao, Kaiyang and Chen, Yajun},
+  journal={},
+  year={2025},
+  month={}
 }
-```
-
-
-## MEMO: Memory-Efficient expandable MOdel
-
-
-Real-world applications require the classification model to adapt to new classes without forgetting old ones. Correspondingly, Class-Incremental Learning (CIL)
-aims to train a model with limited memory size to meet this requirement. Typical CIL methods tend to save representative exemplars from former classes to
-resist forgetting, while recent works find that storing models from history can substantially boost the performance. However, the stored models are not counted
-into the memory budget, which implicitly results in unfair comparisons. We find that when counting the model size into the total budget and comparing methods
-with aligned memory size, saving models do not consistently work, especially for the case with limited memory budgets. As a result, we need to holistically
-evaluate different CIL methods at different memory scales and simultaneously consider accuracy and memory size for measurement. On the other hand, we dive deeply into the construction of the memory buffer for memory efficiency. By analyzing the effect of different layers in the network, we find that shallow and deep layers have different characteristics in CIL. Motivated by this, we propose a simple yet effective baseline, denoted as MEMO for Memory-efficient Expandable MOdel. MEMO extends specialized layers based on the shared generalized representations, efficiently extracting diverse representations with modest cost and maintaining representative exemplars. Extensive experiments on benchmark datasets validate MEMO’s competitive performance.
-
-<div align="center">
-  <img src="resources/memo.png" width="90%">
-
-
-</div>
-
-
-## Prerequisites
-- [torch](https://github.com/pytorch/pytorch)
-- [torchvision](https://github.com/pytorch/vision)
-- [tqdm](https://github.com/tqdm/tqdm)
-- [numpy](https://github.com/numpy/numpy)
-
-
-## Training scripts
-- Train CIFAR100
-```
-python main_memo.py -model memo -init 10 -incre 10 -ms 3312 -net memo_resnet32 -p fair -d 3 --train_base -d 0 1 2 3
-```
-
-## Acknowledgment
-We thank the following repos providing helpful components/functions in our work.
-
-- [PyCIL: A Python Toolbox for Class-Incremental Learning](https://github.com/G-U-N/PyCIL)
-- [Deep Class-Incremental Learning: A Survey](https://github.com/zhoudw-zdw/CIL_Survey)
-
-## Contact
-If there are any questions, please feel free to contact with the authors: Da-Wei Zhou (zhoudw@lamda.nju.edu.cn) and Qi-Wei Wang (wangqiwei@lamda.nju.edu.cn). Enjoy the code.
-
-<div align="center">
-
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=zhoudw-zdw.MEMO&left_color=green&right_color=red)
-
-</div>
+>>>>>>> origin/main
