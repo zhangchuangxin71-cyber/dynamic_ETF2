@@ -76,7 +76,7 @@ SCL-PNC demonstrates significant performance gains. For instance, on the CIFAR-1
 * Python (Recommended version 3.8+)
 * PyTorch (Tested with recent versions)
 * PyCIL library (for standardized benchmarking)
-* A memory buffer of 2,000 examples is required for the exemplar replay component.
+* A memory buffer of 3312 examples is required for the exemplar replay component.
 
 ### Training Settings
 
