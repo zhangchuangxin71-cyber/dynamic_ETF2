@@ -44,15 +44,6 @@ The classifier replaces the traditional fully-connected layer to leverage the pr
 
 * It is **dynamically expandable**, meaning the number of class prototypes ($K$) scales automatically with the arrival of new incremental classes.
 
-### 4. Loss Function
-
-The total loss function is a balanced combination of a point-wise regression loss for collapse and a distillation loss for consistency:
-
-$$\mathcal{L} = \mathcal{L}_{DR} + \lambda \mathcal{L}_{distill} \quad \text{where } 0 < \lambda < 1$$
-
-* $\mathcal{L}_{DR}$: Point Regression Loss, utilized to **induce Neural Collapse**.
-* $\mathcal{L}_{distill}$: Distillation Loss, ensuring **knowledge transfer** and feature consistency between expanded modules.
-
 ## 📊 Experimental Results
 
 ### Datasets and Metrics
@@ -98,7 +89,9 @@ SCL-PNC demonstrates significant performance gains. For instance, on the CIFAR-1
 
 
 
-* A typical command to train on imagenet100 would be:python main_memo.py --dataset imagenet100 --convnet_type memo_resnet34_imagenet --init_cls 50 --increment 10 --memory_size 3312 --batch_size 128 --init_epoch 200 --epochs 200
+* A typical command to train on imagenet100 would be:
+
+  python main_memo.py --dataset imagenet100 --convnet_type memo_resnet34_imagenet --init_cls 50 --increment 10 --memory_size 3312 --batch_size 128 --init_epoch 200 --epochs 200
 ## ✍️ Citation
 
 If you use this work in your research, please cite our paper:
