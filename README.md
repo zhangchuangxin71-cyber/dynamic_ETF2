@@ -80,6 +80,7 @@ SCL-PNC demonstrates significant performance gains. For instance, on the CIFAR-1
 * **Augmentation:** Standard data augmentation including random crop, horizontal flip, and color jitter.
 * **Training Scripts:**The main training script is main_memo.py
   * **Instructions:**
+ * Data link: https://pan.baidu.com/s/1uNE3Ptrxq1slGi824gaU7g?pwd=gxch Extraction code: gxch
   *  After unzipping the downloaded ImageNet-100 dataset, place the `train` and `test` folders directly in the `data/imagenet100/` directory.
   *  After unzipping the downloaded CIFAR100 dataset, place the `train` and `test` folders directly in the `data/cifar-100-python/` directory.
 * A typical command to train on CIFAR100 would be:
